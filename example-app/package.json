@@ -16,7 +16,7 @@
     "@capacitor/android": "7.0.0",
     "@capacitor/core": "latest",
     "@capacitor/ios": "7.0.0",
-    "@davecorp/mmkv": "file:.."
+    "@Davemorgan/mmkv": "file:.."
   },
   "devDependencies": {
     "@capacitor/cli": "latest",

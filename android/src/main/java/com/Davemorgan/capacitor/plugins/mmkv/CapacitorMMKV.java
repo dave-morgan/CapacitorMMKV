@@ -1,4 +1,4 @@
-package com.davecorp.capacitor.plugins.mmkv;
+package com.Davemorgan.capacitor.plugins.mmkv;
 
 import android.util.Log;
 import com.tencent.mmkv.MMKV;

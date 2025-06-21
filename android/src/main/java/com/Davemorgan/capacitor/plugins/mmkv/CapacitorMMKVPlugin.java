@@ -1,4 +1,4 @@
-package com.davecorp.capacitor.plugins.mmkv;
+package com.Davemorgan.capacitor.plugins.mmkv;
 
 import com.getcapacitor.JSObject;
 import com.getcapacitor.JSArray;

@@ -24,7 +24,7 @@ const scopedStoreCache = new Map<string, ScopedMMKVSignalStore>();
  * @example
  * ```typescript
  * import { signal } from '@angular/core';
- * import { initializeAngularMMKVStore } from '@davecorp/mmkv/adapters/angular';
+ * import { initializeAngularMMKVStore } from '@Davemorgan/mmkv/adapters/angular';
  *
  * // In your app initialization
  * initializeAngularMMKVStore(signal);
@@ -39,15 +39,15 @@ export function initializeAngularMMKVStore(signalFactory: CreateSignal): MMKVSig
  * Get the initialized Angular MMKV signal store with optional scoping
  * @param scope Optional mmkvId and/or namespace to scope all operations
  * @returns Scoped or unscoped store based on parameters
- * 
+ *
  * @example
  * ```typescript
  * // Global store
  * const globalStore = getAngularMMKVStore();
- * 
+ *
  * // Auth-scoped store
  * const authStore = getAngularMMKVStore({ mmkvId: 'secure', namespace: 'auth' });
- * 
+ *
  * // Namespace-only scope
  * const userStore = getAngularMMKVStore({ namespace: 'user' });
  * ```
@@ -66,7 +66,7 @@ export function getAngularMMKVStore(scope?: MMKVStoreScope): MMKVSignalStore | S
 
   // Create cache key for scoped store
   const cacheKey = `${scope.mmkvId || 'default'}:${scope.namespace || 'default'}`;
-  
+
   // Return cached scoped store if exists
   if (scopedStoreCache.has(cacheKey)) {
     return scopedStoreCache.get(cacheKey)!;
@@ -75,24 +75,24 @@ export function getAngularMMKVStore(scope?: MMKVStoreScope): MMKVSignalStore | S
   // Create new scoped store and cache it
   const scopedStore = createScopedMMKVSignalStore(angularSignalStore, scope);
   scopedStoreCache.set(cacheKey, scopedStore);
-  
+
   return scopedStore;
 }
 
 /**
  * Angular service-friendly class wrapper with automatic scoping
  * All operations are scoped to the provided mmkvId and/or namespace
- * 
+ *
  * @example
  * ```typescript
  * // Global scope service
  * class GlobalService extends AngularMMKVService {}
- * 
- * // Auth-scoped service  
+ *
+ * // Auth-scoped service
  * class AuthService extends AngularMMKVService {
  *   constructor() { super({ mmkvId: 'secure', namespace: 'auth' }); }
  * }
- * 
+ *
  * // User-scoped service
  * class UserService extends AngularMMKVService {
  *   constructor() { super({ namespace: 'user' }); }

@@ -3,15 +3,11 @@
  * Provides RxJS-compatible observables for MMKV log events
  */
 
-import { CapacitorMMKV } from '../../index';
 import type { MMKVLogEvent, MMKVLogLevel } from '../../definitions';
-import type { 
-  Observable, 
-  ObservableSubscription, 
-  MMKVLoggerConfig, 
-  MMKVLoggerMethods 
-} from './types';
+import { CapacitorMMKV } from '../../index';
+
 import { SimpleSubject, fromCapacitorEvent, createObservable } from './observable';
+import type { Observable, ObservableSubscription, MMKVLoggerConfig, MMKVLoggerMethods } from './types';
 
 /**
  * Angular-compatible MMKV Logger with Observable streams
@@ -64,9 +60,8 @@ export class AngularMMKVLogger implements MMKVLoggerMethods {
     this.currentFilter = config?.filter;
 
     // Add Capacitor event listener
-    this.capacitorSubscription = await CapacitorMMKV.addListener(
-      'mmkvLog',
-      (event: MMKVLogEvent) => this.handleLogEvent(event)
+    this.capacitorSubscription = await CapacitorMMKV.addListener('mmkvLog', (event: MMKVLogEvent) =>
+      this.handleLogEvent(event),
     );
 
     this.isLoggingEnabled = true;
@@ -102,7 +97,7 @@ export class AngularMMKVLogger implements MMKVLoggerMethods {
    * Create a filtered observable stream for specific log levels
    */
   getLogsForLevel(level: MMKVLogLevel): Observable<MMKVLogEvent> {
-    return createObservable<MMKVLogEvent>(observer => {
+    return createObservable<MMKVLogEvent>((observer) => {
       const subscription = this.logs$.subscribe({
         next: (event) => {
           if (event.level === level && observer.next) {
@@ -110,7 +105,7 @@ export class AngularMMKVLogger implements MMKVLoggerMethods {
           }
         },
         error: observer.error,
-        complete: observer.complete
+        complete: observer.complete,
       });
 
       return () => subscription.unsubscribe();
@@ -121,7 +116,7 @@ export class AngularMMKVLogger implements MMKVLoggerMethods {
    * Create a filtered observable stream for specific MMKV instances
    */
   getLogsForInstance(mmkvId: string): Observable<MMKVLogEvent> {
-    return createObservable<MMKVLogEvent>(observer => {
+    return createObservable<MMKVLogEvent>((observer) => {
       const subscription = this.logs$.subscribe({
         next: (event) => {
           if (event.mmkvId === mmkvId && observer.next) {
@@ -129,7 +124,7 @@ export class AngularMMKVLogger implements MMKVLoggerMethods {
           }
         },
         error: observer.error,
-        complete: observer.complete
+        complete: observer.complete,
       });
 
       return () => subscription.unsubscribe();
@@ -140,7 +135,7 @@ export class AngularMMKVLogger implements MMKVLoggerMethods {
    * Create a filtered observable stream with custom filter function
    */
   getFilteredLogs(filter: (event: MMKVLogEvent) => boolean): Observable<MMKVLogEvent> {
-    return createObservable<MMKVLogEvent>(observer => {
+    return createObservable<MMKVLogEvent>((observer) => {
       const subscription = this.logs$.subscribe({
         next: (event) => {
           if (filter(event) && observer.next) {
@@ -148,7 +143,7 @@ export class AngularMMKVLogger implements MMKVLoggerMethods {
           }
         },
         error: observer.error,
-        complete: observer.complete
+        complete: observer.complete,
       });
 
       return () => subscription.unsubscribe();
@@ -222,14 +217,14 @@ let defaultAppId = 'default';
 /**
  * Set the current Angular app ID for logger isolation
  * Call this in your Angular app initialization to ensure logger isolation
- * 
+ *
  * @param appId Unique identifier for your Angular app instance
- * 
+ *
  * @example
  * ```typescript
  * // In main.ts or app.config.ts
- * import { setAngularAppId } from '@davecorp/mmkv/adapters/angular';
- * 
+ * import { setAngularAppId } from '@Davemorgan/mmkv/adapters/angular';
+ *
  * setAngularAppId('my-app-instance');
  * ```
  */
@@ -248,16 +243,16 @@ export function getAngularAppId(): string {
  * Get the AngularMMKVLogger instance for the current Angular app
  * Creates one if it doesn't exist for this app instance
  * Each Angular app gets its own logger singleton
- * 
+ *
  * @param appId Optional app ID override, defaults to current app
  */
 export function getAngularMMKVLogger(appId?: string): AngularMMKVLogger {
   const effectiveAppId = appId || defaultAppId;
-  
+
   if (!appLoggers.has(effectiveAppId)) {
     appLoggers.set(effectiveAppId, new AngularMMKVLogger());
   }
-  
+
   return appLoggers.get(effectiveAppId)!;
 }
 
@@ -273,13 +268,13 @@ export function createAngularMMKVLogger(): AngularMMKVLogger {
 /**
  * Destroy the logger instance for a specific Angular app
  * Useful for cleanup during app teardown or testing
- * 
+ *
  * @param appId App ID to destroy logger for, defaults to current app
  */
 export async function destroyAngularMMKVLogger(appId?: string): Promise<void> {
   const effectiveAppId = appId || defaultAppId;
   const logger = appLoggers.get(effectiveAppId);
-  
+
   if (logger) {
     await logger.destroy();
     appLoggers.delete(effectiveAppId);
@@ -291,7 +286,7 @@ export async function destroyAngularMMKVLogger(appId?: string): Promise<void> {
  * Useful for complete cleanup or testing scenarios
  */
 export async function destroyAllAngularMMKVLoggers(): Promise<void> {
-  const destroyPromises = Array.from(appLoggers.values()).map(logger => logger.destroy());
+  const destroyPromises = Array.from(appLoggers.values()).map((logger) => logger.destroy());
   await Promise.all(destroyPromises);
   appLoggers.clear();
 }
@@ -311,42 +306,42 @@ export function getActiveAngularAppIds(): string[] {
 export const AngularMMKVLoggerUtils = {
   /**
    * Quick setup for development logging
-   * 
+   *
    * @param appId Optional app ID override
    */
   async enableDevelopmentLogging(appId?: string): Promise<AngularMMKVLogger> {
     const logger = getAngularMMKVLogger(appId);
     await logger.enableLogging({
       level: 4, // Debug level
-      filter: (event) => event.level <= 4 // Filter out verbose logs
+      filter: (event) => event.level <= 4, // Filter out verbose logs
     });
     return logger;
   },
 
   /**
    * Quick setup for production error logging
-   * 
+   *
    * @param appId Optional app ID override
    */
   async enableProductionLogging(appId?: string): Promise<AngularMMKVLogger> {
     const logger = getAngularMMKVLogger(appId);
     await logger.enableLogging({
       level: 1, // Error level only
-      filter: (event) => event.level === 1 // Only errors
+      filter: (event) => event.level === 1, // Only errors
     });
     return logger;
   },
 
   /**
    * Setup logging with console output
-   * 
+   *
    * @param level Log level to enable
    * @param appId Optional app ID override
    */
   async enableConsoleLogging(level: MMKVLogLevel = 3, appId?: string): Promise<ObservableSubscription> {
     const logger = getAngularMMKVLogger(appId);
     await logger.enableLogging({ level });
-    
+
     return logger.logs$.subscribe({
       next: (event) => {
         const levelNames = ['OFF', 'ERROR', 'WARN', 'INFO', 'DEBUG', 'VERBOSE'];
@@ -355,13 +350,13 @@ export const AngularMMKVLoggerUtils = {
         const appInfo = appId ? ` {${appId}}` : '';
         console.log(`[MMKV ${levelName}]${instanceInfo}${appInfo} ${event.message}`);
       },
-      error: (error) => console.error('MMKV Logger error:', error)
+      error: (error) => console.error('MMKV Logger error:', error),
     });
   },
 
   /**
    * Get the logger for the current Angular app
-   * 
+   *
    * @param appId Optional app ID override
    */
   getLogger(appId?: string): AngularMMKVLogger {
@@ -370,7 +365,7 @@ export const AngularMMKVLoggerUtils = {
 
   /**
    * Initialize logging for an Angular app with custom configuration
-   * 
+   *
    * @param config Logger configuration
    * @param appId Optional app ID override
    */
@@ -378,5 +373,5 @@ export const AngularMMKVLoggerUtils = {
     const logger = getAngularMMKVLogger(appId);
     await logger.enableLogging(config);
     return logger;
-  }
+  },
 };

@@ -2,7 +2,16 @@
   "permissions": {
     "allow": [
       "WebFetch(domain:capacitorjs.com)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(ls:*)",
+      "Bash(rm:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run eslint:*)",
+      "Bash(./gradlew:*)",
+      "Bash(touch:*)",
+      "Bash(cp:*)",
+      "Bash([ -d \"/mnt/c/Development/CapacitorMMKV/node_modules/@DaveMorgan\" ])"
     ],
     "deny": []
   }

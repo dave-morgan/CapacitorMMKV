@@ -5,7 +5,7 @@ This adapter provides reactive MMKV storage using Angular signals. It automatica
 ## Installation
 
 ```bash
-npm install @davecorp/mmkv
+npm install @Davemorgan/mmkv
 ```
 
 ## Quick Start
@@ -15,7 +15,7 @@ npm install @davecorp/mmkv
 ```typescript
 // app.config.ts or main.ts
 import { signal } from '@angular/core';
-import { initializeAngularMMKVStore } from '@davecorp/mmkv/adapters/angular';
+import { initializeAngularMMKVStore } from '@Davemorgan/mmkv/adapters/angular';
 
 // Initialize the global store
 initializeAngularMMKVStore(signal);
@@ -25,7 +25,7 @@ initializeAngularMMKVStore(signal);
 
 ```typescript
 import { Component } from '@angular/core';
-import { getAngularMMKVStore } from '@davecorp/mmkv/adapters/angular';
+import { getAngularMMKVStore } from '@Davemorgan/mmkv/adapters/angular';
 
 @Component({
   selector: 'app-settings',
@@ -33,13 +33,13 @@ import { getAngularMMKVStore } from '@davecorp/mmkv/adapters/angular';
     <div>
       <p>Username: {{ username() }}</p>
       <input [value]="username()" (input)="username.set($event.target.value)" />
-      
+
       <p>Dark Mode: {{ isDarkMode() }}</p>
       <button (click)="toggleDarkMode()">Toggle Theme</button>
-      
+
       <p>Settings: {{ JSON.stringify(settings()) }}</p>
     </div>
-  `
+  `,
 })
 export class SettingsComponent {
   // Scoped to 'preferences' namespace
@@ -51,7 +51,7 @@ export class SettingsComponent {
   settings = this.store.getObjectWithDefault('userSettings', { theme: 'light', lang: 'en' });
 
   toggleDarkMode() {
-    this.isDarkMode.update(current => !current);
+    this.isDarkMode.update((current) => !current);
   }
 }
 ```
@@ -60,7 +60,7 @@ export class SettingsComponent {
 
 ```typescript
 import { Injectable } from '@angular/core';
-import { AngularMMKVService } from '@davecorp/mmkv/adapters/angular';
+import { AngularMMKVService } from '@Davemorgan/mmkv/adapters/angular';
 
 @Injectable({ providedIn: 'root' })
 export class UserPreferencesService extends AngularMMKVService {
@@ -92,10 +92,10 @@ export class UserProfileService extends AngularMMKVService {
     super({ namespace: 'user' }); // Only namespace scoped
   }
 
-  readonly profile = this.getObjectWithDefault('profile', { 
-    name: '', 
-    email: '', 
-    avatar: null 
+  readonly profile = this.getObjectWithDefault('profile', {
+    name: '',
+    email: '',
+    avatar: null,
   });
 }
 ```
@@ -105,13 +105,15 @@ export class UserProfileService extends AngularMMKVService {
 ### Store Methods
 
 #### Basic Types
+
 - `getString(key, options?)` - Returns `WritableSignal<string | null>`
-- `getInt(key, options?)` - Returns `WritableSignal<number | null>`  
+- `getInt(key, options?)` - Returns `WritableSignal<number | null>`
 - `getBool(key, options?)` - Returns `WritableSignal<boolean | null>`
 - `getFloat(key, options?)` - Returns `WritableSignal<number | null>`
 - `getObject<T>(key, options?)` - Returns `WritableSignal<T | null>`
 
 #### With Default Values
+
 - `getStringWithDefault(key, defaultValue, options?)` - Returns `WritableSignal<string>`
 - `getIntWithDefault(key, defaultValue, options?)` - Returns `WritableSignal<number>`
 - `getBoolWithDefault(key, defaultValue, options?)` - Returns `WritableSignal<boolean>`
@@ -122,11 +124,11 @@ export class UserProfileService extends AngularMMKVService {
 
 ```typescript
 interface MMKVSignalOptions {
-  mmkvId?: string;      // Custom MMKV instance
-  namespace?: string;   // Key namespace
-  defaultValue?: any;   // Default value for the signal
-  serialize?: (value: any) => string;    // Custom serialization
-  deserialize?: (value: string) => any;  // Custom deserialization
+  mmkvId?: string; // Custom MMKV instance
+  namespace?: string; // Key namespace
+  defaultValue?: any; // Default value for the signal
+  serialize?: (value: any) => string; // Custom serialization
+  deserialize?: (value: string) => any; // Custom deserialization
 }
 ```
 
@@ -136,7 +138,7 @@ interface MMKVSignalOptions {
 
 ```typescript
 @Component({
-  selector: 'app-dashboard'
+  selector: 'app-dashboard',
 })
 export class DashboardComponent {
   // Different stores for different purposes
@@ -157,24 +159,30 @@ export class DashboardComponent {
 // Each service is automatically scoped
 @Injectable({ providedIn: 'root' })
 export class AuthService extends AngularMMKVService {
-  constructor() { super({ mmkvId: 'secure', namespace: 'auth' }); }
-  
+  constructor() {
+    super({ mmkvId: 'secure', namespace: 'auth' });
+  }
+
   readonly token = this.getStringWithDefault('token', '');
   readonly user = this.getObjectWithDefault('user', null);
 }
 
 @Injectable({ providedIn: 'root' })
 export class PreferencesService extends AngularMMKVService {
-  constructor() { super({ namespace: 'preferences' }); }
-  
+  constructor() {
+    super({ namespace: 'preferences' });
+  }
+
   readonly theme = this.getBoolWithDefault('darkMode', false);
   readonly language = this.getStringWithDefault('language', 'en');
 }
 
 @Injectable({ providedIn: 'root' })
 export class CacheService extends AngularMMKVService {
-  constructor() { super({ mmkvId: 'cache' }); }
-  
+  constructor() {
+    super({ mmkvId: 'cache' });
+  }
+
   readonly apiCache = this.getObjectWithDefault('api', {});
   readonly imageCache = this.getObjectWithDefault('images', {});
 }
@@ -186,7 +194,7 @@ export class CacheService extends AngularMMKVService {
 export class DateStorageService extends AngularMMKVService {
   readonly lastLogin = this.store.getObjectWithDefault<Date>('lastLogin', new Date(), {
     serialize: (date: Date) => date.toISOString(),
-    deserialize: (str: string) => new Date(str)
+    deserialize: (str: string) => new Date(str),
   });
 }
 ```
@@ -201,16 +209,16 @@ export class DateStorageService extends AngularMMKVService {
       <input formControlName="email" placeholder="Email" />
       <button (click)="save()">Save</button>
     </form>
-  `
+  `,
 })
 export class UserFormComponent {
   private store = getAngularMMKVStore();
-  
+
   userProfile = this.store.getObjectWithDefault('userProfile', { name: '', email: '' });
-  
+
   userForm = this.fb.group({
     name: [this.userProfile().name],
-    email: [this.userProfile().email]
+    email: [this.userProfile().email],
   });
 
   constructor(private fb: FormBuilder) {
@@ -234,12 +242,12 @@ The Angular adapter includes `AngularMMKVLogger` for reactive log monitoring usi
 ### Basic Logging Setup
 
 ```typescript
-import { 
+import {
   setAngularAppId,
-  getAngularMMKVLogger, 
+  getAngularMMKVLogger,
   AngularMMKVLoggerUtils,
-  MMKVLogLevel 
-} from '@davecorp/mmkv/adapters/angular';
+  MMKVLogLevel,
+} from '@Davemorgan/mmkv/adapters/angular';
 
 // Initialize in main.ts or app.config.ts
 setAngularAppId('my-app-instance');
@@ -251,18 +259,18 @@ export class LoggingService {
 
   async initializeLogging() {
     // Enable logging with debug level
-    await this.logger.enableLogging({ 
+    await this.logger.enableLogging({
       level: MMKVLogLevel.Debug,
-      filter: (event) => event.level <= MMKVLogLevel.Info // Filter out debug/verbose
+      filter: (event) => event.level <= MMKVLogLevel.Info, // Filter out debug/verbose
     });
 
     // Subscribe to all logs
-    this.logger.logs$.subscribe(event => {
+    this.logger.logs$.subscribe((event) => {
       console.log(`[MMKV] ${event.message}`);
     });
 
     // Subscribe to errors only
-    this.logger.errorLogs$.subscribe(event => {
+    this.logger.errorLogs$.subscribe((event) => {
       console.error('MMKV Error:', event.message);
       // Send to error reporting service
     });
@@ -274,7 +282,7 @@ export class LoggingService {
 
 ```typescript
 @Component({
-  selector: 'app-debug-panel'
+  selector: 'app-debug-panel',
 })
 export class DebugPanelComponent implements OnInit {
   private logger = getAngularMMKVLogger();
@@ -294,21 +302,17 @@ export class DebugPanelComponent implements OnInit {
     AngularMMKVLoggerUtils.enableDevelopmentLogging();
 
     // Monitor errors and display notifications
-    this.errorLogs$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(event => {
-        this.showErrorNotification(event.message);
-      });
+    this.errorLogs$.pipe(takeUntil(this.destroy$)).subscribe((event) => {
+      this.showErrorNotification(event.message);
+    });
 
     // Log performance metrics
-    this.logger.getFilteredLogs(event => 
-      event.message.includes('performance') || 
-      event.message.includes('size')
-    ).pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(event => {
-      this.trackPerformanceMetric(event);
-    });
+    this.logger
+      .getFilteredLogs((event) => event.message.includes('performance') || event.message.includes('size'))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((event) => {
+        this.trackPerformanceMetric(event);
+      });
   }
 
   ngOnDestroy() {
@@ -334,17 +338,16 @@ await logger.enableLogging({
   filter: (event) => {
     // Only log events from specific instances
     return event.mmkvId === 'secure' || event.mmkvId === 'critical';
-  }
+  },
 });
 
 // Monitor specific log patterns
-logger.getFilteredLogs(event => 
-  event.message.includes('error') || 
-  event.message.includes('failed')
-).subscribe(event => {
-  // Handle error patterns
-  this.handleCriticalEvent(event);
-});
+logger
+  .getFilteredLogs((event) => event.message.includes('error') || event.message.includes('failed'))
+  .subscribe((event) => {
+    // Handle error patterns
+    this.handleCriticalEvent(event);
+  });
 ```
 
 ### Angular App Isolation
@@ -353,7 +356,7 @@ Each Angular app instance gets its own logger singleton, preventing cross-app in
 
 ```typescript
 // In main.ts or app.config.ts
-import { setAngularAppId } from '@davecorp/mmkv/adapters/angular';
+import { setAngularAppId } from '@Davemorgan/mmkv/adapters/angular';
 
 // Set unique app ID (useful for micro-frontends or multiple app instances)
 setAngularAppId('admin-app');
@@ -370,7 +373,7 @@ export class DataService {
 }
 
 // In testing or cleanup scenarios
-import { destroyAngularMMKVLogger } from '@davecorp/mmkv/adapters/angular';
+import { destroyAngularMMKVLogger } from '@Davemorgan/mmkv/adapters/angular';
 
 afterEach(async () => {
   await destroyAngularMMKVLogger('admin-app'); // Clean up specific app logger
@@ -409,7 +412,7 @@ const specificLogger = getAngularMMKVLogger('main-app');
 The core signal store is framework-agnostic and can work with any signal implementation:
 
 ```typescript
-import { createMMKVSignalStore } from '@davecorp/mmkv/adapters/angular';
+import { createMMKVSignalStore } from '@Davemorgan/mmkv/adapters/angular';
 
 // Works with any signal library
 const store = createMMKVSignalStore(yourSignalFactory);

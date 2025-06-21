@@ -1,11 +1,11 @@
-# @davecorp/mmkv
+# @Davemorgan/mmkv
 
 A Capacitor plugin for MMKV - Ultra-fast key-value storage for mobile apps
 
 ## Install
 
 ```bash
-npm install @davecorp/mmkv
+npm install @Davemorgan/mmkv
 npx cap sync
 ```
 
@@ -24,7 +24,7 @@ npx cap sync
 ### Basic Operations
 
 ```typescript
-import { CapacitorMMKV } from '@davecorp/mmkv';
+import { CapacitorMMKV } from '@Davemorgan/mmkv';
 
 // Store values
 await CapacitorMMKV.setString({ key: 'username', value: 'john_doe' });
@@ -39,9 +39,9 @@ const isActive = await CapacitorMMKV.getBool({ key: 'isActive' });
 const score = await CapacitorMMKV.getFloat({ key: 'score' });
 
 console.log(username.value); // 'john_doe'
-console.log(age.value);      // 25
+console.log(age.value); // 25
 console.log(isActive.value); // true
-console.log(score.value);    // 98.5
+console.log(score.value); // 98.5
 ```
 
 ### Angular Signal Integration
@@ -50,7 +50,7 @@ For Angular applications, use the reactive signal adapter:
 
 ```typescript
 import { signal } from '@angular/core';
-import { initializeAngularMMKVStore, getAngularMMKVStore } from '@davecorp/mmkv/adapters/angular';
+import { initializeAngularMMKVStore, getAngularMMKVStore } from '@Davemorgan/mmkv/adapters/angular';
 
 // Initialize once in your app
 initializeAngularMMKVStore(signal);
@@ -76,17 +76,17 @@ Use `mmkvId` to create separate storage instances for different purposes:
 await CapacitorMMKV.setString({ key: 'user', value: 'John' });
 
 // Auth instance
-await CapacitorMMKV.setString({ 
-  key: 'token', 
-  value: 'abc123', 
-  mmkvId: 'auth' 
+await CapacitorMMKV.setString({
+  key: 'token',
+  value: 'abc123',
+  mmkvId: 'auth',
 });
 
 // Cache instance
-await CapacitorMMKV.setString({ 
-  key: 'data', 
-  value: 'cached_data', 
-  mmkvId: 'cache' 
+await CapacitorMMKV.setString({
+  key: 'data',
+  value: 'cached_data',
+  mmkvId: 'cache',
 });
 
 // Each instance maintains separate storage
@@ -100,24 +100,24 @@ Use `namespace` to organize data within the same instance:
 
 ```typescript
 // User preferences
-await CapacitorMMKV.setString({ 
-  key: 'theme', 
-  value: 'dark', 
-  namespace: 'preferences' 
+await CapacitorMMKV.setString({
+  key: 'theme',
+  value: 'dark',
+  namespace: 'preferences',
 });
 
 // User profile
-await CapacitorMMKV.setString({ 
-  key: 'name', 
-  value: 'John', 
-  namespace: 'profile' 
+await CapacitorMMKV.setString({
+  key: 'name',
+  value: 'John',
+  namespace: 'profile',
 });
 
 // App settings
-await CapacitorMMKV.setBool({ 
-  key: 'notifications', 
-  value: true, 
-  namespace: 'settings' 
+await CapacitorMMKV.setBool({
+  key: 'notifications',
+  value: true,
+  namespace: 'settings',
 });
 ```
 
@@ -127,19 +127,19 @@ You can use both `mmkvId` and `namespace` together:
 
 ```typescript
 // Secure storage with user-specific namespace
-await CapacitorMMKV.setString({ 
-  key: 'token', 
-  value: 'secure_token', 
-  mmkvId: 'secure', 
-  namespace: 'user_123' 
+await CapacitorMMKV.setString({
+  key: 'token',
+  value: 'secure_token',
+  mmkvId: 'secure',
+  namespace: 'user_123',
 });
 
 // Different user, same secure instance
-await CapacitorMMKV.setString({ 
-  key: 'token', 
-  value: 'another_token', 
-  mmkvId: 'secure', 
-  namespace: 'user_456' 
+await CapacitorMMKV.setString({
+  key: 'token',
+  value: 'another_token',
+  mmkvId: 'secure',
+  namespace: 'user_456',
 });
 ```
 
@@ -148,7 +148,7 @@ await CapacitorMMKV.setString({
 Configure MMKV logging with customizable levels:
 
 ```typescript
-import { MMKVLogger, MMKVLogLevel } from '@davecorp/mmkv';
+import { MMKVLogger, MMKVLogLevel } from '@Davemorgan/mmkv';
 
 // Enable logging with callback
 await MMKVLogger.enableLogging(MMKVLogLevel.Debug, (event) => {
@@ -199,7 +199,7 @@ await CapacitorMMKV.clearAll({ namespace: 'user' }); // Clears only user namespa
 ### Data Types
 
 - `setString(options)` / `getString(options)` - String values
-- `setInt(options)` / `getInt(options)` - Integer values  
+- `setInt(options)` / `getInt(options)` - Integer values
 - `setBool(options)` / `getBool(options)` - Boolean values
 - `setFloat(options)` / `getFloat(options)` - Float values
 - `setBytes(options)` / `getBytes(options)` - Byte array values
@@ -208,21 +208,21 @@ await CapacitorMMKV.clearAll({ namespace: 'user' }); // Clears only user namespa
 
 All methods support these optional parameters:
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `mmkvId` | `string` | Custom storage instance identifier |
-| `namespace` | `string` | Namespace for organizing keys |
+| Parameter   | Type     | Description                        |
+| ----------- | -------- | ---------------------------------- |
+| `mmkvId`    | `string` | Custom storage instance identifier |
+| `namespace` | `string` | Namespace for organizing keys      |
 
 ### Logging Levels
 
-| Level | Value | Description |
-|-------|--------|-------------|
-| `Off` | 0 | No logging (default) |
-| `Error` | 1 | Error messages only |
-| `Warn` | 2 | Warning and error messages |
-| `Info` | 3 | Informational messages |
-| `Debug` | 4 | Debug information |
-| `Verbose` | 5 | All log messages |
+| Level     | Value | Description                |
+| --------- | ----- | -------------------------- |
+| `Off`     | 0     | No logging (default)       |
+| `Error`   | 1     | Error messages only        |
+| `Warn`    | 2     | Warning and error messages |
+| `Info`    | 3     | Informational messages     |
+| `Debug`   | 4     | Debug information          |
+| `Verbose` | 5     | All log messages           |
 
 ## Framework Integrations
 
@@ -232,12 +232,14 @@ The Angular adapter provides reactive signal integration:
 
 ```typescript
 // See full documentation at: src/adapters/angular/README.md
-import { AngularMMKVService } from '@davecorp/mmkv/adapters/angular';
+import { AngularMMKVService } from '@Davemorgan/mmkv/adapters/angular';
 
 @Injectable()
 export class UserService extends AngularMMKVService {
-  constructor() { super({ namespace: 'user' }); }
-  
+  constructor() {
+    super({ namespace: 'user' });
+  }
+
   readonly profile = this.getObjectWithDefault('profile', { name: '', email: '' });
   readonly preferences = this.getBoolWithDefault('darkMode', false);
 }

@@ -1,4 +1,4 @@
-import { CapacitorMMKV } from '@davecorp/mmkv';
+import { CapacitorMMKV } from '@Davemorgan/mmkv';
 
 window.testEcho = () => {
     const inputValue = document.getElementById("echoInput").value;

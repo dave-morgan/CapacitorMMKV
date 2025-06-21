@@ -1,6 +1,7 @@
 import { registerPlugin } from '@capacitor/core';
 
-import type { CapacitorMMKVPlugin, MMKVLogEvent, MMKVLogLevel } from './definitions';
+import type { CapacitorMMKVPlugin, MMKVLogEvent } from './definitions';
+import { MMKVLogLevel } from './definitions';
 
 const CapacitorMMKV = registerPlugin<CapacitorMMKVPlugin>('CapacitorMMKV', {
   web: () => import('./web').then((m) => new m.CapacitorMMKVWeb()),
@@ -8,7 +9,7 @@ const CapacitorMMKV = registerPlugin<CapacitorMMKVPlugin>('CapacitorMMKV', {
 
 // Convenience wrapper for setting up logging
 export class MMKVLogger {
-  private static listener: (event: MMKVLogEvent) => void;
+  private static listener: ((event: MMKVLogEvent) => void) | null = null;
 
   static async enableLogging(level: MMKVLogLevel = MMKVLogLevel.Info, callback?: (event: MMKVLogEvent) => void): Promise<void> {
     await CapacitorMMKV.setLogLevel({ level });

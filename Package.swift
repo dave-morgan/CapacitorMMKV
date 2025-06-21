@@ -2,11 +2,11 @@
 import PackageDescription
 
 let package = Package(
-    name: "DavecorpMmkv",
+    name: "DavemorganMmkv",
     platforms: [.iOS(.v14)],
     products: [
         .library(
-            name: "DavecorpMmkv",
+            name: "DavemorganMmkv",
             targets: ["CapacitorMMKVPlugin"])
     ],
     dependencies: [

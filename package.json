@@ -1,5 +1,5 @@
 {
-  "name": "@Davemorgan/mmkv",
+  "name": "davemorgan/capacitor-mmkv",
   "version": "0.0.1",
   "description": "Capacitor plugin for MMKV store",
   "main": "dist/plugin.cjs.js",
@@ -15,7 +15,10 @@
     "Package.swift",
     "DavemorganMmkv.podspec"
   ],
-  "author": "",
+  "author": "davemorgan",
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
